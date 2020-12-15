@@ -1,24 +1,27 @@
 <html>
+
  <head>
-  <title>Tfeft202</title>
-  
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9">
-  
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
-  
-  <style type="text/css">
-  	td.details-control {
-	    background: url('resources/img/details_open.png') no-repeat center center;
+	<title>Tfeft202</title>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9">
+	
+	<link rel="stylesheet" href="global/css/bootstrap.min.css">
+	<link rel="stylesheet" href="global/css/jquery.dataTables.min.css" />
+	
+	<style type="text/css">
+	 	td.details-control {
+	    background: url('global/img/details_open.png') no-repeat center center;
 	    cursor: pointer;
 	}
 	tr.details td.details-control {
-	    background: url('/resources/img/details_close.png') no-repeat center center;
+	    background: url('global/img/details_close.png') no-repeat center center;
 	}
-  </style>
-  
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+	 </style>
+	<script src="global/js/jquery-3.5.1.js"></script>
+	<script src="global/js/jquery.dataTables.min.js"></script>
+	<script src="global/js/popper.min.js"></script>
+	<script src="global/js/bootstrap.min.js"></script>
+   
  </head>
  
  <body>
@@ -118,60 +121,54 @@
             </tr>
         </tfoot>
     </table>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
  </body>
 </html>
 <script type="text/javascript">
 
-var action = ""; // determines which action is going to be taken
-var dt; // datatable
+var dt = null; // datatable
 
 $(document).ready(function() {
 	
 	load_table();
 	
 	function load_table(){
-		action="fetch";
 		var jsonreq = new Object();
-        jsonreq.params = new Array();
-		sendAjax(jsonreq,action);
+        jsonreq.action="fetch";
+		sendAjax(jsonreq);
 	}
 	
 	$("#updateItem").click(function (){
-		action= "update";
 		var jsonreq = new Object();
+		jsonreq.action= "update";
 		jsonreq.id = $("#u_id").val();
 		jsonreq.gtibCode =  $("#u_gtib").val();
 		jsonreq.comp =  $("#u_comp").val();
 		jsonreq.itemCode =  $("#u_item").val();
-		sendAjax(jsonreq,action);
+		sendAjax(jsonreq);
 		$("#updateModal").modal('hide');
-		dt.destroy();
 		load_table();
 	});
 	
 	$("#save").click(function (){
 		var jsonreq = new Object();
+		jsonreq.action="insert";
 		jsonreq.gtibCode =  $("#gtib").val();
 		jsonreq.comp =  $("#comp").val();
 		jsonreq.itemCode =  $("#item").val();
-		sendAjax(jsonreq,action);
+		sendAjax(jsonreq);
 		$("#insertModal").modal('hide');
-		dt.destroy();
 		load_table();
 	});
 	
 	$("#addNew").click(function (){
-		action= "insert";
 		$("#gtib").val("");
 		$("#comp").val("");
 		$("#item").val("");
 	});
 	
-    function sendAjax(jsonreq,action){
+    function sendAjax(jsonreq){
 		$.ajax({
-		    url: "${pageContext.request.contextPath}/"+action,
+		    url: "${pageContext.request.contextPath}/TrialServlet",
 		    type: "POST",
 		    dataType: "json",
 		    data: JSON.stringify(jsonreq),
@@ -180,62 +177,82 @@ $(document).ready(function() {
 		    async: true,
 		    success: function(data) {
 		    	
-	        	dt = $('#example').DataTable( {	
-	        		data:data,
-	        		columns: [
-	                    {
-	                        class:          "details-control",
-	                        orderable:      false,
-	                        data:           null,
-	                        defaultContent: ""
-	                    },
-	                    { data: "comp"},
-	                    { data: "itemCode"},
-	                    { data: "gtibCode"},
-	                    { data: "crt_usr"},
-	                    { data: "crt_tst"},
-	                   ],
-	                   order: [[1, 'asc']]
-	        	});
-	        	
+		    	if(jsonreq.action == "fetch"){
+		    		
+		    		if(dt==null){
+			    		dt = $('#example').DataTable( {	
+			        		data:data,
+			        		columns: [
+			                    {
+			                        class:          "details-control",
+			                        orderable:      false,
+			                        data:           null,
+			                        defaultContent: ""
+			                    },
+			                    { data: "comp"},
+			                    { data: "itemCode"},
+			                    { data: "gtibCode"},
+			                    { data: "crt_usr"},
+			                    { data: "crt_tst"},
+			                   ],
+			                   order: [[1, 'asc']]
+			        	});
+		    		}else{
+		    			/*dt.clear().draw();
+		    			dt.rows.add(data); // Add new data
+		    			dt.columns.adjust().draw(); // Redraw the DataTable*/
+		    			location.reload();
+		    		}
+		    	}
+		    	
 	        	var clickedRow = null;
 	        	var previousRow= null;
+	        	var clickedTr = null;
+	        	var previousTr= null;
+	        	 
 	        	 
 	       	    $('#example tbody').on( 'click', 'tr td.details-control', function () {
 	       	    	
-	       	        var tr = $(this).closest('tr');
-	       	        clickedRow = dt.row( tr );
+	       	        clickedTr = $(this).closest('tr');
+	       	        clickedRow = dt.row( clickedTr );
 	       	        
 	       	        if(previousRow == null){
-	       	        	
 	       	        	previousRow=clickedRow;
+	       	        	previousTr=clickedTr;
 	       	        	clickedRow.child( format( clickedRow.data() ) ).show();
+	       	        	clickedTr.addClass( 'details' );
 	       	        }else if(clickedRow.child.isShown()){
 	       	        	clickedRow.child.hide();
+	       	        	previousTr.removeClass( 'details' );
 	       	        }else{
 	       	        	previousRow.child.hide();
 	       	        	previousRow= null;
+	       	        	previousTr.removeClass( 'details' );
+	       	        	previousTr = null;
 	       	        	previousRow=clickedRow;
+	       	        	previousTr=clickedTr;
 	       	        	clickedRow.child( format( clickedRow.data() ) ).show();
+	       	        	clickedTr.addClass('details');
 	       	        }
+	       	        
 	       	        $("#update").click(function (){
 	       	        	$("#u_id").val(clickedRow.data().id);
-	      	        		$("#u_gtib").val(clickedRow.data().gtibCode);
-	      	        		$("#u_comp").val(clickedRow.data().comp);
-	      	        		$("#u_item").val(clickedRow.data().itemCode);
-	      	        	});
+      	        		$("#u_gtib").val(clickedRow.data().gtibCode);
+      	        		$("#u_comp").val(clickedRow.data().comp);
+      	        		$("#u_item").val(clickedRow.data().itemCode);
+	      	        });
 	      	            
-	      	            $("#delete").click(function (){
-	      	            	if (confirm('Do you want to delete the item?')) {
-	      	            		action = "delete";
-	          	        		var jsonreq = new Object();
-	          	        		jsonreq.id=clickedRow.data().id;
-	          	        		sendAjax(jsonreq,action);
-	          	        		alert("Succesfully deleted!");
-	          	        		dt.destroy();
-	          	        		load_table();
-	     	            	}
-	      	        	});
+      	            $("#delete").click(function (){
+      	            	if (confirm('Do you want to delete the item?')) {
+      	            		action = "delete";
+          	        		var jsonreq = new Object();
+          	        		jsonreq.action="delete";
+          	        		jsonreq.id=clickedRow.data().id;
+          	        		sendAjax(jsonreq);
+          	        		alert("Succesfully deleted!");
+          	        		load_table();
+     	            	}
+      	        	});
 	       	    } );
 		    }
 		});

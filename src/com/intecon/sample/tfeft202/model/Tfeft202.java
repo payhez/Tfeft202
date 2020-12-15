@@ -3,6 +3,7 @@ package com.intecon.sample.tfeft202.model;
 public class Tfeft202 {
 	
 	private int id;
+	public String action;
 	private String comp;
 	private String itemCode;
 	private String gtibCode;

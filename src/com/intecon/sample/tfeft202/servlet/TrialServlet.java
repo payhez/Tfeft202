@@ -21,7 +21,7 @@ import com.intecon.sample.tfeft202.service.TrialService;
 /**
  * Servlet implementation class TrialServlet
  */
-@WebServlet("/")
+@WebServlet("/TrialServlet")
 public class TrialServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -43,7 +43,7 @@ public class TrialServlet extends HttpServlet {
 		Gson gson= new Gson();
 		String json="";
 		String json_req ="";
-		String action = request.getServletPath();
+		
 		service = new TrialService();	
 		
 		final BufferedReader br = new BufferedReader(new InputStreamReader((InputStream) request.getInputStream(), Charset.forName("UTF-8")));
@@ -54,47 +54,53 @@ public class TrialServlet extends HttpServlet {
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
 		
+		Tfeft202 theObject = gson.fromJson(json_req, Tfeft202.class);
 		
 		try {
-			switch (action) {
+			switch (theObject.action) {
 			
-			case "/insert":
+			case "insert":
 				
-				Tfeft202 newObject = gson.fromJson(json_req, Tfeft202.class);
-				
-				if(service.insert(newObject)) {
+				if(service.insert(theObject)) {
 					response.getWriter().write("New Item is added successfully");
 				}else {
 					response.getWriter().write("Cannot be added!");
 				}
 				break;
 				
-			case "/delete":
+			case "delete":
 				
-				Tfeft202 deletedObject = gson.fromJson(json_req, Tfeft202.class);
-				
-				if(service.delete(deletedObject)) {
+				if(service.delete(theObject)) {
 					response.getWriter().write("The Item is deleted successfully");
 				}else {
 					response.getWriter().write("Cannot be deleted!");
 				}
 				break;
-			case "/update":
+			case "update":
 				
-				Tfeft202 updatedObject = gson.fromJson(json_req, Tfeft202.class);
-				
-				if(service.update(updatedObject)) {
+				if(service.update(theObject)) {
 					response.getWriter().write("The Item is updated successfully");
 				}else {
 					response.getWriter().write("Cannot be updated!");
 				}
 				break;
 				
-			case "/fetch":
+			case "fetch":
 				
 				List<Tfeft202> objectList = new ArrayList<>();
 				objectList=service.fetch();
 				json=gson.toJson(objectList);
+				
+				response.setContentType("application/json");
+			    response.setCharacterEncoding("UTF-8");
+			    response.getWriter().write(json);
+				
+				break;
+			default:
+				
+				List<Tfeft202> defaultObjectList = new ArrayList<>();
+				defaultObjectList=service.fetch();
+				json=gson.toJson(defaultObjectList);
 				
 				response.setContentType("application/json");
 			    response.setCharacterEncoding("UTF-8");

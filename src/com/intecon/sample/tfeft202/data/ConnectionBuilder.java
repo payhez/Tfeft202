@@ -1,7 +1,6 @@
 package com.intecon.sample.tfeft202.data;
 
 import java.sql.*;
-import java.util.*;
 
 import com.intecon.sample.tfeft202.data.ConnectionBuilder;
 
