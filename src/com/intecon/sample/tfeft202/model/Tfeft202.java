@@ -1,9 +1,14 @@
 package com.intecon.sample.tfeft202.model;
 
+import javax.persistence.Transient;
+
+
 public class Tfeft202 {
 	
-	private int id;
+	@Transient
 	public String action;
+	
+	private int id;
 	private String comp;
 	private String itemCode;
 	private String gtibCode;
@@ -13,11 +18,14 @@ public class Tfeft202 {
 	private String crt_tst;
 	private String upd_usr;
 	private String upd_tst;
-	private boolean isActive;
+	private Boolean isActive;
 	
+	public Tfeft202() {
+		
+	}
 	
 	public Tfeft202(int id, String comp, String itemCode, String gtibCode, String codeListName, String objectName, String crt_usr,
-			String crt_tst, String upd_usr, String upd_tst, boolean isActive) {
+			String crt_tst, String upd_usr, String upd_tst, Boolean isActive) {
 		super();
 		this.id=id;
 		this.comp = comp;
@@ -29,11 +37,11 @@ public class Tfeft202 {
 		this.crt_tst = crt_tst;
 		this.upd_usr = upd_usr;
 		this.upd_tst = upd_tst;
-		this.isActive = isActive;
+		this.setIsActive(isActive);
 	}
 	
 	public Tfeft202(String comp, String itemCode, String gtibCode, String codeListName, String objectName, String crt_usr, //This constructor is only for insert option
-			String crt_tst, boolean isActive) { // No ID and Update operations
+			String crt_tst, Boolean isActive) { // No ID and Update operations
 		super();
 		this.comp = comp;
 		this.itemCode = itemCode;
@@ -42,7 +50,7 @@ public class Tfeft202 {
 		this.objectName = objectName;
 		this.crt_usr = crt_usr;
 		this.crt_tst = crt_tst;
-		this.isActive = isActive;
+		this.setIsActive(isActive);
 	}
 	
 	
@@ -88,13 +96,6 @@ public class Tfeft202 {
 	public void setCrt_tst(String crt_tst) {
 		this.crt_tst = crt_tst;
 	}
-	public boolean isActive() {
-		return isActive;
-	}
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-
 
 	public int getId() {
 		return id;
@@ -119,6 +120,14 @@ public class Tfeft202 {
 
 	public void setUpd_tst(String upd_tst) {
 		this.upd_tst = upd_tst;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 }

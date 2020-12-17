@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"https://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.intecon.sample.tfeft202.model.Tfeft202" table="tfeft202">
+     <id name="id" type="int">
+         <column name="id" />
+         <generator class="increment" />
+     </id>
+     <property name = "comp" column = "Comp" type = "string"/>
+     <property name = "itemCode" column = "ItemCode" type = "string"/>
+     <property name = "gtibCode" column = "GtibCode" type = "string"/>
+     <property name = "codeListName" column = "CodeListName" type = "string"/>
+     <property name = "objectName" column = "ObjectName" type = "string"/>
+     <property name = "crt_usr" column = "CRT_USR" type = "string"/>
+     <property name = "crt_tst" column = "CRT_TST" type = "string"/>
+     <property name = "upd_usr" column = "UPD_USR" type = "string"/>
+     <property name = "upd_tst" column = "UPD_TST" type = "string"/>
+     <property name = "isActive" column = "isActive" type = "boolean"/>
+    </class>
+</hibernate-mapping>

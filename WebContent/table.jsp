@@ -157,6 +157,7 @@ $(document).ready(function() {
 		jsonreq.itemCode =  $("#item").val();
 		sendAjax(jsonreq);
 		$("#insertModal").modal('hide');
+		console.log(jsonreq);
 		load_table();
 	});
 	
@@ -202,6 +203,8 @@ $(document).ready(function() {
 		    			dt.rows.add(data); // Add new data
 		    			dt.columns.adjust().draw(); // Redraw the DataTable*/
 		    			location.reload();
+		    			//return false;
+		    			
 		    		}
 		    	}
 		    	
@@ -249,22 +252,44 @@ $(document).ready(function() {
           	        		jsonreq.action="delete";
           	        		jsonreq.id=clickedRow.data().id;
           	        		sendAjax(jsonreq);
-          	        		alert("Succesfully deleted!");
           	        		load_table();
      	            	}
       	        	});
 	       	    } );
-		    }
+		    }/*,
+		    error: function(error){
+		    	alert(error.responseText);
+		    }*/
 		});
 	}
 } );
 
 function format ( d ) {
-    return '<b>Code List Name:</b> '+d.codeListName+'<br>'+
-    '<b>Object Name:</b> '+d.objectName+'<br>'+
-    '<b>Guncelleyen:</b> '+d.upd_usr+'<br>'+
-    '<b>Guncelleme Tarihi:</b> '+d.upd_tst+'<br>'+
-    '<b>Active:</b> '+d.isActive+'<br><br>'+
+	
+	/*'<b>Code List Name:</b> '+d.codeListName+'<br>'+
+    '<b>Object Name:</b> '+d.objectName+'<br>'+*/
+    
+    var isActive;
+    var updateDate;
+    var updatePerson;
+    
+    if(d.upd_tst==null){
+    	updateDate = "Henuz guncellenmedi";
+    	updatePerson="Henuz guncellenmedi";
+    }else{
+    	updateDate = d.upd_tst;
+    	updatePerson=d.upd_usr;
+    }
+    
+    if(d.isActive){
+    	isActive = "Aktif";
+    }else{
+    	isActive = "Aktif Değil";
+    }
+    
+    return '<b>Guncelleyen:</b> '+updatePerson+'<br>'+
+    '<b>Guncelleme Tarihi:</b> '+updateDate+'<br>'+
+    '<b>Aktiflik Durumu:</b> '+isActive+'<br><br>'+
         '<button id= "update" type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">Update</button>'+
         '   '+
         '<button id="delete" type="button" class="btn btn-danger">Delete</button>';

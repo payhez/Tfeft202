@@ -27,7 +27,7 @@ public class TrialService {
 	
 	public boolean delete(Tfeft202 theObject) {
 		
-		theObject.setActive(false);
+		theObject.setIsActive(false);
 		
 		return dao.delete(theObject);
 	}
@@ -38,7 +38,7 @@ public class TrialService {
 		theObject.setCodeListName("ABC");
 		theObject.setCrt_usr("1");
 		theObject.setCrt_tst(getDateTime());
-		theObject.setActive(true);
+		theObject.setIsActive(true);
 		
 		return dao.insert(theObject);
 	}

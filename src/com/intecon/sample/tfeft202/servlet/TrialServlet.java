@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-
 import com.intecon.sample.tfeft202.model.Tfeft202;
 import com.intecon.sample.tfeft202.service.TrialService;
 
@@ -62,7 +62,7 @@ public class TrialServlet extends HttpServlet {
 			case "insert":
 				
 				if(service.insert(theObject)) {
-					response.getWriter().write("New Item is added successfully");
+					response.getWriter().write("The Item is added successfully");
 				}else {
 					response.getWriter().write("Cannot be added!");
 				}
