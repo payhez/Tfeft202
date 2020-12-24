@@ -56,32 +56,35 @@ public class TrialServlet extends HttpServlet {
 		
 		Tfeft202 theObject = gson.fromJson(json_req, Tfeft202.class);
 		
+		String success = gson.toJson("1");
+		String fail = gson.toJson("0");
+		
 		try {
 			switch (theObject.action) {
 			
 			case "insert":
 				
 				if(service.insert(theObject)) {
-					response.getWriter().write("The Item is added successfully");
+					response.getWriter().write(success);
 				}else {
-					response.getWriter().write("Cannot be added!");
+					response.getWriter().write(fail);
 				}
 				break;
 				
 			case "delete":
 				
 				if(service.delete(theObject)) {
-					response.getWriter().write("The Item is deleted successfully");
+					response.getWriter().write(success);
 				}else {
-					response.getWriter().write("Cannot be deleted!");
+					response.getWriter().write(fail);
 				}
 				break;
 			case "update":
 				
 				if(service.update(theObject)) {
-					response.getWriter().write("The Item is updated successfully");
+					response.getWriter().write(success);
 				}else {
-					response.getWriter().write("Cannot be updated!");
+					response.getWriter().write(fail);
 				}
 				break;
 				

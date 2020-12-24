@@ -146,7 +146,7 @@ $(document).ready(function() {
 		jsonreq.itemCode =  $("#u_item").val();
 		sendAjax(jsonreq);
 		$("#updateModal").modal('hide');
-		load_table();
+		//load_table();
 	});
 	
 	$("#save").click(function (){
@@ -157,8 +157,7 @@ $(document).ready(function() {
 		jsonreq.itemCode =  $("#item").val();
 		sendAjax(jsonreq);
 		$("#insertModal").modal('hide');
-		console.log(jsonreq);
-		load_table();
+		//load_table();
 	});
 	
 	$("#addNew").click(function (){
@@ -178,41 +177,35 @@ $(document).ready(function() {
 		    async: true,
 		    success: function(data) {
 		    	
-		    	if(jsonreq.action == "fetch"){
-		    		
-		    		if(dt==null){
-			    		dt = $('#example').DataTable( {	
-			        		data:data,
-			        		columns: [
-			                    {
-			                        class:          "details-control",
-			                        orderable:      false,
-			                        data:           null,
-			                        defaultContent: ""
-			                    },
-			                    { data: "comp"},
-			                    { data: "itemCode"},
-			                    { data: "gtibCode"},
-			                    { data: "crt_usr"},
-			                    { data: "crt_tst"},
-			                   ],
-			                   order: [[1, 'asc']]
-			        	});
-		    		}else{
-		    			/*dt.clear().draw();
-		    			dt.rows.add(data); // Add new data
-		    			dt.columns.adjust().draw(); // Redraw the DataTable*/
-		    			location.reload();
-		    			//return false;
-		    			
-		    		}
-		    	}
-		    	
+	    		if(dt==null){
+		    		dt = $('#example').DataTable( {	
+		        		data:data,
+		        		columns: [
+		                    {
+		                        class:          "details-control",
+		                        orderable:      false,
+		                        data:           null,
+		                        defaultContent: ""
+		                    },
+		                    { data: "comp"},
+		                    { data: "itemCode"},
+		                    { data: "gtibCode"},
+		                    { data: "crt_usr"},
+		                    { data: "crt_tst"},
+		                   ],
+		                   order: [[1, 'asc']]
+		        	});
+	    		}else{
+	    			dt.clear().draw();
+	    			dt.rows.add(data); // Add new data
+	    			dt.columns.adjust().draw(); // Redraw the DataTable*/
+	    			return false;
+	    		}
+		 
 	        	var clickedRow = null;
 	        	var previousRow= null;
 	        	var clickedTr = null;
 	        	var previousTr= null;
-	        	 
 	        	 
 	       	    $('#example tbody').on( 'click', 'tr td.details-control', function () {
 	       	    	
@@ -252,14 +245,15 @@ $(document).ready(function() {
           	        		jsonreq.action="delete";
           	        		jsonreq.id=clickedRow.data().id;
           	        		sendAjax(jsonreq);
-          	        		load_table();
+          	        		//load_table();
      	            	}
       	        	});
 	       	    } );
-		    }/*,
+		    },
 		    error: function(error){
 		    	alert(error.responseText);
-		    }*/
+		    	console.log("error");
+		    }
 		});
 	}
 } );
